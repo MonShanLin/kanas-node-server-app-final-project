@@ -9,6 +9,8 @@ import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from './Kanbas/Assignments/routes.js';
 import session from "express-session";
+//import CoursesRoutes from "./CourseModel/routes.js";
+//import ModulesRoutes from "./ModuleModel/routes.js";
 
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || 'mongodb+srv://Cluster64492:XWNCRFBjZHlx@cluster64492.orn2x.mongodb.net/kanbas';
 mongoose.connect(CONNECTION_STRING);
