@@ -9,10 +9,13 @@ import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from './Kanbas/Assignments/routes.js';
 import session from "express-session";
-//import CoursesRoutes from "./CourseModel/routes.js";
-//import ModulesRoutes from "./ModuleModel/routes.js";
 
-const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || 'mongodb+srv://Cluster64492:XWNCRFBjZHlx@cluster64492.orn2x.mongodb.net/kanbas';
+// import quiz and question routes
+import QuizRoutes from "./Kanbas/Quizzes/quizRoutes.js";
+import QuestionRoutes from './Kanbas/Quizzes/questionRoutes.js'
+
+
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/kanbas';
 mongoose.connect(CONNECTION_STRING);
 
 const app = express()
@@ -40,11 +43,18 @@ app.use(
       
       
 app.use(express.json()); 
+
+
 UserRoutes(app);
 CourseRoutes(app);
 ModuleRoutes(app);
 Hello(app);
 Lab5(app);
 AssignmentRoutes(app);
+
+// add quiz and question routes
+QuizRoutes(app);
+QuestionRoutes(app);
+
 app.listen(4000);
 const port = process.env.PORT || 4000;
