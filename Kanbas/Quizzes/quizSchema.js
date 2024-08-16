@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import QuestionModel from "./QuestionModel.js";
 
 const quizSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -19,9 +20,8 @@ const quizSchema = new mongoose.Schema({
     availableDate: { type: Date },
     untilDate: { type: Date },
     published: { type: Boolean, default: false },
-    course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+    courseId: { type: String, required: true },
     questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
-    //createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
 export default quizSchema;

@@ -1,4 +1,3 @@
-// /Users/phoebelin/kanbas-node-server-app/Kanbas/Quizzes/quizRoutes.js
 import * as dao from "./quizDao.js";
 
 export default function QuizRoutes(app) {
@@ -68,7 +67,6 @@ export default function QuizRoutes(app) {
   app.get("/api/courses/:courseId/quizzes", findAllQuizzes);
   app.get("/api/courses/:courseId/quizzes/:quizId", findQuizById);
   app.post("/api/courses/:courseId/quizzes", createQuiz);
-  app.put("/api/quizzes/:quizId", updateQuiz);
-  app.delete("/api/quizzes/:quizId", deleteQuiz);
+  app.put("/api/courses/:courseId/quizzes/:quizId", updateQuiz);
+  app.delete("/api/courses/:courseId/quizzes/:quizId", deleteQuiz);
 }
-

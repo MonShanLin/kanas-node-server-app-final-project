@@ -15,7 +15,7 @@ import QuizRoutes from "./Kanbas/Quizzes/quizRoutes.js";
 import QuestionRoutes from './Kanbas/Quizzes/questionRoutes.js'
 
 
-const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/kanbas';
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || 'mongodb+srv://Cluster64492:XWNCRFBjZHlx@cluster64492.orn2x.mongodb.net/kanbas';
 mongoose.connect(CONNECTION_STRING);
 
 const app = express()

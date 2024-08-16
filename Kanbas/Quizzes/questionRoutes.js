@@ -1,77 +1,75 @@
-import * as dao from "./questionDao.js";
+// /Users/phoebelin/kanbas-node-server-app/Kanbas/Quizzes/quizRoutes.js
+import * as dao from "./quizDao.js";
 
-export default function QuestionRoutes(app) {
+export default function QuizRoutes(app) {
 
-  const createQuestion = async (req, res) => {
+  const findAllQuizzes = async (req, res) => {
     try {
-      const newQuestion = await dao.createQuestion(req.body);
-      res.json(newQuestion);
+      const quizzes = await dao.findAllQuizzes(req.params.courseId);
+      res.json(quizzes);
     } catch (error) {
-      console.error("Error creating question:", error);
-      res.status(500).json({ message: "Error creating question" });
+      console.error("Error finding quizzes:", error);
+      res.status(500).json({ message: "Error finding quizzes" });
     }
   };
 
-  const findAllQuestions = async (req, res) => {
+  const findQuizById = async (req, res) => {
     try {
-      const questions = await dao.findAllQuestions(req.params.quizId);
-      res.json(questions);
-    } catch (error) {
-      console.error("Error finding questions:", error);
-      res.status(500).json({ message: "Error finding questions" });
-    }
-  };
-
-  const findQuestionById = async (req, res) => {
-    try {
-      const question = await dao.findQuestionById(req.params.questionId);
-      if (!question) {
-        res.status(404).json({ message: "Question not found" });
+      const quiz = await dao.findQuizById(req.params.quizId);
+      if (!quiz) {
+        res.status(404).json({ message: "Quiz not found" });
       } else {
-        res.json(question);
+        res.json(quiz);
       }
     } catch (error) {
-      console.error("Error finding question by ID:", error);
-      res.status(500).json({ message: "Error finding question by ID" });
+      console.error("Error finding quiz by ID:", error);
+      res.status(500).json({ message: "Error finding quiz by ID" });
     }
   };
 
-  const updateQuestion = async (req, res) => {
+  const createQuiz = async (req, res) => {
     try {
-      const { questionId } = req.params;
-      const updatedQuestion = await dao.updateQuestion(questionId, req.body);
-      if (!updatedQuestion) {
-        res.status(404).json({ message: "Question not found" });
-      } else {
-        res.json(updatedQuestion);
-      }
+      const quiz = await dao.createQuiz(req.body);
+      res.json(quiz);
     } catch (error) {
-      console.error("Error updating question:", error);
-      res.status(500).json({ message: "Error updating question" });
+      console.error("Error creating quiz:", error);
+      res.status(500).json({ message: "Error creating quiz" });
     }
   };
 
-  const deleteQuestion = async (req, res) => {
+  const deleteQuiz = async (req, res) => {
     try {
-      const { questionId } = req.params;
-      const status = await dao.deleteQuestion(questionId);
+      const status = await dao.deleteQuiz(req.params.quizId);
       if (status) {
-        res.sendStatus(204);
+        res.status(200).json({ message: "Quiz deleted successfully" });
       } else {
-        res.status(404).json({ message: "Question not found" });
+        res.status(404).json({ message: "Quiz not found" });
       }
     } catch (error) {
-      console.error("Error deleting question:", error);
-      res.status(500).json({ message: "Error deleting question" });
+      console.error("Error deleting quiz:", error);
+      res.status(500).json({ message: "Error deleting quiz" });
     }
   };
 
- 
-  app.post("/api/questions", createQuestion);
-  app.put("/api/questions/:questionId", updateQuestion);
-  app.delete("/api/questions/:questionId", deleteQuestion);
+  const updateQuiz = async (req, res) => {
+    try {
+      const updatedQuiz = await dao.updateQuiz(req.params.quizId, req.body);
+      if (!updatedQuiz) {
+        res.status(404).json({ message: "Quiz not found" });
+      } else {
+        res.json(updatedQuiz);
+      }
+    } catch (error) {
+      console.error("Error updating quiz:", error);
+      res.status(500).json({ message: "Error updating quiz" });
+    }
+  };
 
-  app.get("/api/questions/quiz/:quizId", findAllQuestions);
-  app.get("/api/questions/:questionId", findQuestionById);
+  app.get("/api/courses/:courseId/quizzes", findAllQuizzes);
+  app.get("/api/courses/:courseId/quizzes/:quizId", findQuizById);
+  app.post("/api/courses/:courseId/quizzes", createQuiz);
+  app.put("/api/quizzes/:quizId", updateQuiz);
+  app.delete("/api/quizzes/:quizId", deleteQuiz);
 }
+
 

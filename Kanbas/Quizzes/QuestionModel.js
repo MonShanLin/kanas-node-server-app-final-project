@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
-import questionSchema from "./questionSchema.js";
+
+const questionSchema = new mongoose.Schema({
+    text: { type: String, required: true },
+    options: [{ type: String }],
+    correctAnswer: { type: String, required: true },
+    // Add other fields relevant to your question model
+});
 
 const QuestionModel = mongoose.model("Question", questionSchema);
 

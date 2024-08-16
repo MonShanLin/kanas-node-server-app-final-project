@@ -1,13 +1,13 @@
-// /Users/phoebelin/kanbas-node-server-app/Kanbas/Quizzes/quizDao.js
 import QuizModel from "./QuizModel.js";
 
 export const createQuiz = async (quiz) => {
-    delete quiz._id
+    delete quiz._id;
     return await QuizModel.create(quiz);
 };
 
 export const findAllQuizzes = async (courseId) => {
-    return await QuizModel.find({ course: courseId }).populate('questions');
+    // Pass an object with courseId as the filter
+    return await QuizModel.find({ courseId }).populate('questions');
 };
 
 export const findQuizById = async (quizId) => {
