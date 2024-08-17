@@ -8,6 +8,8 @@ const questionSchema = new mongoose.Schema({
     choices: [{ type: String }],  // For Multiple Choice questions
     correctAnswer: { type: String },  // Correct answer for True/False or Fill in the Blank
     quiz: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }
-});
+},
+{ collection: "questions" }
+);
 
 export default questionSchema;
