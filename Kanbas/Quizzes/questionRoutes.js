@@ -1,75 +1,76 @@
-// /Users/phoebelin/kanbas-node-server-app/Kanbas/Quizzes/quizRoutes.js
-import * as dao from "./quizDao.js";
-
-export default function QuizRoutes(app) {
-
-  const findAllQuizzes = async (req, res) => {
-    try {
-      const quizzes = await dao.findAllQuizzes(req.params.courseId);
-      res.json(quizzes);
-    } catch (error) {
-      console.error("Error finding quizzes:", error);
-      res.status(500).json({ message: "Error finding quizzes" });
-    }
+import * as dao from "./dao.js";
+export default function QuestionRoutes(app) {
+  const createQuestion = async (req, res) => {
+    const question = await dao.createQuestion(req.body);
+    res.json(question);
   };
+  app.post("/api/quizzes/:qid/questions", createQuestion);
 
-  const findQuizById = async (req, res) => {
-    try {
-      const quiz = await dao.findQuizById(req.params.quizId);
-      if (!quiz) {
-        res.status(404).json({ message: "Quiz not found" });
-      } else {
-        res.json(quiz);
-      }
-    } catch (error) {
-      console.error("Error finding quiz by ID:", error);
-      res.status(500).json({ message: "Error finding quiz by ID" });
-    }
+  const deleteQuestion = async (req, res) => {
+    const status = await dao.deleteQuestion(req.params.questionId);
+    res.json(status);
   };
+  app.delete("/api/questions/:questionId", deleteQuestion);
 
-  const createQuiz = async (req, res) => {
-    try {
-      const quiz = await dao.createQuiz(req.body);
-      res.json(quiz);
-    } catch (error) {
-      console.error("Error creating quiz:", error);
-      res.status(500).json({ message: "Error creating quiz" });
-    }
+  const findAllQuestions = async (req, res) => {
+    const questions = await dao.findAllQuestions();
+    res.json(questions);
   };
+  app.get("/api/questions", findAllQuestions);
 
-  const deleteQuiz = async (req, res) => {
-    try {
-      const status = await dao.deleteQuiz(req.params.quizId);
-      if (status) {
-        res.status(200).json({ message: "Quiz deleted successfully" });
-      } else {
-        res.status(404).json({ message: "Quiz not found" });
-      }
-    } catch (error) {
-      console.error("Error deleting quiz:", error);
-      res.status(500).json({ message: "Error deleting quiz" });
-    }
+  const findQuestionById = async (req, res) => {
+    const question = await dao.findQuestionById(req.params.questionId);
+    res.json(question);
   };
+  app.get("/api/questions/:questionId", findQuestionById);
 
-  const updateQuiz = async (req, res) => {
-    try {
-      const updatedQuiz = await dao.updateQuiz(req.params.quizId, req.body);
-      if (!updatedQuiz) {
-        res.status(404).json({ message: "Quiz not found" });
-      } else {
-        res.json(updatedQuiz);
-      }
-    } catch (error) {
-      console.error("Error updating quiz:", error);
-      res.status(500).json({ message: "Error updating quiz" });
-    }
+  const findQuestionByQuiz = async (req, res) => {
+    const questions = await dao.findQuestionByQuiz(req.params.quiz);
+    res.json(questions);
   };
+  app.get("/api/quizzes/:quiz/questions", findQuestionByQuiz);
 
-  app.get("/api/courses/:courseId/quizzes", findAllQuizzes);
-  app.get("/api/courses/:courseId/quizzes/:quizId", findQuizById);
-  app.post("/api/courses/:courseId/quizzes", createQuiz);
-  app.put("/api/quizzes/:quizId", updateQuiz);
-  app.delete("/api/quizzes/:quizId", deleteQuiz);
+  const updateQuestion = async (req, res) => {
+    const { questionId } = req.params;
+    console.log(questionId);
+    console.log(req.body);
+    const status = await dao.updateQuestion(questionId, req.body);
+    res.json(status);
+  };
+  app.put("/api/questions/:questionId", updateQuestion);
+
+
+  app.put("/api/assignments/:aid", (req, res) => {
+    const { aid } = req.params;
+    const assignmentIndex = db.assignments.findIndex(
+      (a) => a._id === aid);
+    db.assignments[assignmentIndex] = {
+      ...db.assignments[assignmentIndex],
+      ...req.body
+    };
+    res.sendStatus(204);
+  });
+
+  app.delete("/api/assignments/:aid", (req, res) => {
+    const { aid } = req.params;
+    db.assignments = db.assignments.filter((a) => a._id !== aid);
+    res.sendStatus(200);
+  });
+
+  app.post("/api/courses/:cid/assignments", (req, res) => {
+    const { cid } = req.params;
+    const newAssignment = {
+      ...req.body,
+      course: cid,
+      _id: new Date().getTime().toString(),
+    };
+    db.assignments.push(newAssignment);
+    res.send(newAssignment);
+  });
+
+  app.get("/api/courses/:cid/assignments", (req, res) => {
+    const { cid } = req.params;
+    const assignments = db.assignments.filter((a) => a.course === cid);
+    res.json(assignments);
+  });
 }
-
-
