@@ -1,4 +1,5 @@
-import * as dao from "./dao.js";
+import * as dao from "./questionDao.js";
+
 export default function QuestionRoutes(app) {
   const createQuestion = async (req, res) => {
     const question = await dao.createQuestion(req.body);
