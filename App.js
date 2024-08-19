@@ -9,6 +9,7 @@ import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from './Kanbas/Assignments/routes.js';
 import session from "express-session";
+import ScoreRoutes from "./Kanbas/Quizzes/ScoreRoute.js";
 
 // import quiz and question routes
 import QuizRoutes from "./Kanbas/Quizzes/quizRoutes.js";
@@ -55,6 +56,7 @@ AssignmentRoutes(app);
 // add quiz and question routes
 QuizRoutes(app);
 QuestionRoutes(app);
+ScoreRoutes(app)
 
 app.listen(4000);
 const port = process.env.PORT || 4000;
